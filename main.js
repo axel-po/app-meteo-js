@@ -1,24 +1,16 @@
 /* App meteo */
 const keyAPI = "9f4747a54773dc6dc634920901512b1c";
 const currentDay = document.querySelector(".current-day");
-const daysOfWeek = [
-  "Lundi",
-  "Mardi",
-  "Mercredi",
-  "Jeudi",
-  "Vendredi",
-  "Samedi",
-  "Dimanche",
-];
+currentDay.innerText = current_Day;
+const currentDateDOM = document.querySelector(".current-date");
 const descriptionWeather = document.querySelector(".weather-description");
 const temp = document.querySelector(".temp");
 const localisation = document.querySelector(".localisation");
 
-/* Date */
-const date = new Date();
-let indexOfDay = date.getDay();
-
-currentDay.innerText = daysOfWeek[indexOfDay - 1];
+const humidity = document.querySelector(".humidity");
+const windSpeed = document.querySelector(".wind-speed");
+const previsionDay = document.querySelectorAll(".prevision-day");
+const previsionTemp = document.querySelectorAll(".temp-prevision");
 
 let resultsAPI;
 
@@ -28,7 +20,7 @@ if (navigator.geolocation) {
       //console.log(position);
       let long = position.coords.longitude;
       let lat = position.coords.latitude;
-      //callAPI(long, lat);
+      callAPI(long, lat);
     },
     () => {
       alert(
@@ -49,8 +41,32 @@ callAPI = (long, lat) => {
       console.log(data);
       resultsAPI = data;
 
-      resultsAPI.current.weather[0].description;
       temp.innerText = `${Math.trunc(resultsAPI.current.temp)}°C`;
       localisation.innerHTML = `<img src="img/loc.svg" alt="logo localisation" />${resultsAPI.timezone}, FR`;
+      descriptionWeather.innerText = resultsAPI.current.weather[0].description;
+
+      humidity.innerText = `${resultsAPI.current.humidity} %`;
+      windSpeed.innerText = `${Math.trunc(resultsAPI.current.wind_speed)} km/h`;
+
+      /* Temp previsions */
+      for (let n = 0; n < previsionTemp.length; n++) {
+        previsionTemp[0].innerText = `${Math.trunc(resultsAPI.current.temp)}°C`;
+        previsionTemp[n].innerText = `${Math.trunc(
+          resultsAPI.daily[n].temp.day
+        )}°C`;
+      }
     });
 };
+
+/* Days previsions */
+for (i = 0; i < previsionDay.length; i++) {
+  previsionDay[i].innerText = arraySorted[i].slice(0, 3);
+}
+
+/* Print date days/month/year */
+const fullDate = new Date();
+let option2 = { day: "numeric", month: "long", year: "numeric" };
+let full_Date = fullDate.toLocaleDateString("fr-FR", option2).split(" ");
+
+//a revoir
+currentDateDOM.innerText = full_Date.join(" ");

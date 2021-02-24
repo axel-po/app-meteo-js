@@ -22,7 +22,7 @@ main {
   position: relative;
   display: flex;
   min-width: 701px;
-  max-width: 1100px;
+  max-width: 701px;
   width: 50%;
   height: 400px;
 }
