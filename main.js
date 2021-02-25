@@ -1,5 +1,7 @@
 /* App meteo */
 const keyAPI = "9f4747a54773dc6dc634920901512b1c";
+const imgMeteo = document.querySelector(".img-meteo");
+const gradiant = document.querySelector(".gradiant");
 const currentDay = document.querySelector(".current-day");
 currentDay.innerText = current_Day;
 const currentDateDOM = document.querySelector(".current-date");
@@ -20,7 +22,7 @@ if (navigator.geolocation) {
       //console.log(position);
       let long = position.coords.longitude;
       let lat = position.coords.latitude;
-      callAPI(long, lat);
+      //callAPI(long, lat);
     },
     () => {
       alert(
@@ -44,7 +46,9 @@ callAPI = (long, lat) => {
       temp.innerText = `${Math.trunc(resultsAPI.current.temp)}°C`;
       localisation.innerHTML = `<img src="img/loc.svg" alt="logo localisation" />${resultsAPI.timezone}, FR`;
       descriptionWeather.innerText = resultsAPI.current.weather[0].description;
-
+      descriptionWeather.innerText =
+        descriptionWeather.innerText.charAt(0).toLocaleUpperCase() +
+        descriptionWeather.innerText.slice(1);
       humidity.innerText = `${resultsAPI.current.humidity} %`;
       windSpeed.innerText = `${Math.trunc(resultsAPI.current.wind_speed)} km/h`;
 
@@ -54,6 +58,19 @@ callAPI = (long, lat) => {
         previsionTemp[n].innerText = `${Math.trunc(
           resultsAPI.daily[n].temp.day
         )}°C`;
+      }
+
+      switch (resultsAPI.current.weather[0].main) {
+        case "Clouds":
+          imgMeteo.src = "/img/cloud.jpg";
+          gradiant.style.background =
+            "linear-gradient(90deg, rgba(218,217,232,1) 0%, rgba(49,49,56,1) 64%, rgba(25,25,41,1) 94%)";
+          break;
+        case "Clear":
+          imgMeteo.src = "/img/sun.jpg";
+          gradiant.style.background =
+            "linear-gradient(135deg, #72edf2 10%, #5151e5 100%)";
+          break;
       }
     });
 };
