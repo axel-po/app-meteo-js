@@ -92,11 +92,6 @@ main {
   font-weight: bold;
 }
 
-.logo-weather {
-  width: 60px;
-  height: 60px;
-}
-
 .container-weather-temp .temp {
   font-size: 59px;
 }
@@ -135,6 +130,19 @@ main {
   align-items: center;
   flex-direction: column;
   width: 100%;
+  transition: all 0.2s ease;
+}
+
+.bloc-prevision i {
+  font-size: 26px;
+}
+
+.bloc-prevision:hover {
+  background: #fff;
+  border-radius: 9px;
+  transform: scale(1.12);
+  color: #000;
+  cursor: pointer;
 }
 
 .active {
@@ -182,15 +190,56 @@ button img {
     flex-direction: column;
     min-width: 90%;
     height: auto;
+    margin-bottom: 36px;
+  }
+
+  main {
+    height: auto;
   }
 
   .app__container--left {
     position: static;
     width: 100%;
     transform: translateY(36px);
+    margin-bottom: 36px;
   }
 
   .app__container--right {
     padding: 50px 30px 30px;
   }
+}
+
+/* loader css */
+.lds-dual-ring {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  background: #343e4b;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.end-load {
+  opacity: 0;
 }

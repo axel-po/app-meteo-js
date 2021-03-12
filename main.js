@@ -11,8 +11,10 @@ const localisation = document.querySelector(".localisation");
 
 const humidity = document.querySelector(".humidity");
 const windSpeed = document.querySelector(".wind-speed");
+const iconsWeather = document.querySelectorAll(".fas");
 const previsionDay = document.querySelectorAll(".prevision-day");
 const previsionTemp = document.querySelectorAll(".temp-prevision");
+const loader = document.querySelector(".lds-dual-ring");
 
 let resultsAPI;
 
@@ -22,7 +24,7 @@ if (navigator.geolocation) {
       //console.log(position);
       let long = position.coords.longitude;
       let lat = position.coords.latitude;
-      //callAPI(long, lat);
+      callAPI(long, lat);
     },
     () => {
       alert(
@@ -60,19 +62,45 @@ callAPI = (long, lat) => {
         )}°C`;
       }
 
+      /* Image background weather */
       switch (resultsAPI.current.weather[0].main) {
         case "Clouds":
           imgMeteo.src = "/img/cloud.jpg";
           gradiant.style.background =
             "linear-gradient(90deg, rgba(218,217,232,1) 0%, rgba(49,49,56,1) 64%, rgba(25,25,41,1) 94%)";
+          iconsWeather[0].classList.replace("fa-sun", "fa-cloud");
           break;
         case "Clear":
           imgMeteo.src = "/img/sun.jpg";
           gradiant.style.background =
             "linear-gradient(135deg, #72edf2 10%, #5151e5 100%)";
+          iconsWeather[0].classList.replace("fa-cloud", "fa-sun");
           break;
       }
+
+      /* Weather icons prevesions */
+      for (let k = 1; k < iconsWeather.length; k++) {
+        switch (resultsAPI.daily[k].weather[0].main) {
+          case "Clear":
+            iconsWeather[k].classList.replace("fa-cloud", "fa-sun");
+            break;
+          case "Cloud":
+            iconsWeather[k].classList.replace("fa-sun", "fa-cloud");
+            break;
+          case "Rain":
+            iconsWeather[k].classList.replace(
+              "fa-cloud",
+              "fa-cloud-showers-heavy"
+            );
+            break;
+        }
+      }
     });
+
+  setInterval(() => {
+    loader.classList.add("end-load");
+    loader.style.zIndex = "-9999";
+  }, 1000);
 };
 
 /* Days previsions */
@@ -85,5 +113,5 @@ const fullDate = new Date();
 let option2 = { day: "numeric", month: "long", year: "numeric" };
 let full_Date = fullDate.toLocaleDateString("fr-FR", option2).split(" ");
 
-//a revoir
+//see you later
 currentDateDOM.innerText = full_Date.join(" ");
